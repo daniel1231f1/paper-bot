@@ -421,7 +421,7 @@ class LiveBot:
                 "product": self.cfg.product, "price": px, "paused": self.paused, "error": self.error,
                 "capital": self.cfg.capital, "equity": eq, "buy_hold_equity": hold,
                 "max_drawdown_pct": max_drawdown([s[1] for s in self.samples] + [eq]) * 100,
-                "position": "LONG" if eng.pos else "FLAT",
+                "position": "LONG" if eng.pos else "FLAT", "cash": eng.cash, "qty": eng.pos["qty"] if eng.pos else 0.0,
                 "position_entry": eng.pos["entry"] if eng.pos else None,
                 "p_up": p, "horizon_min": self.cfg.horizon * self.cfg.candle_seconds // 60,
                 "model_ready": eng.ready, "entry_p": self.cfg.entry_p, "exit_p": self.cfg.exit_p,

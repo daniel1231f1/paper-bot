@@ -145,6 +145,33 @@ $('#bt').onclick = async () => {
   btchart = new Chart($('#btchart'), {type:'line', data:{labels, datasets:ds}, options:{animation:false, scales:{x:{ticks:{maxTicksLimit:8,color:'#8a94a3'}}, y:{ticks:{color:'#8a94a3'}}}, plugins:{legend:{labels:{color:'#8a94a3'}}}}});
 };
 
+// Pages mode: Coinbase websocket streams every trade tick straight to the browser (sub-second)
+let snap = null, ws = null, lastDraw = 0;
+function liveDraw(px){
+  const now = performance.now(); if (now - lastDraw < 100) return; lastDraw = now;  // max ~10 repaints/s
+  const cards = $('#stats').children; if (!snap || cards.length < 4) return;
+  const set = (i, v, c, sub) => { const k = cards[i]; const e = k.querySelector('.v'); e.textContent = v; if (c != null) e.className = 'v ' + c; if (sub != null) k.querySelector('.sub').textContent = sub; };
+  set(0, usd(px), '', 'live Coinbase tick');
+  if (snap.cash != null) {
+    const eq = snap.cash + snap.qty * px, pnl = eq - snap.capital, hold = snap.buy_hold_equity / snap.price * px, vs = eq - hold;
+    set(1, usd(eq), cls(pnl)); set(2, (pnl >= 0 ? '+' : '') + usd(pnl), cls(pnl), (pnl / snap.capital * 100).toFixed(2) + '%');
+    set(3, (vs >= 0 ? '+' : '') + usd(vs), cls(vs), 'hold would be ' + usd(hold));
+  }
+}
+function connect(){
+  if (ws || !snap) return;
+  ws = new WebSocket('wss://ws-feed.exchange.coinbase.com');
+  ws.onopen = () => ws.send(JSON.stringify({type:'subscribe', product_ids:[snap.product], channels:['ticker']}));
+  ws.onmessage = e => { try { const m = JSON.parse(e.data); if (m.type === 'ticker' && m.price) liveDraw(parseFloat(m.price)); } catch {} };
+  ws.onclose = ws.onerror = () => { ws = null; setTimeout(connect, 2000); };
+}
+const _refresh = refresh;
+refresh = async function(){
+  await _refresh();
+  if (!STATIC) return;
+  try { snap = await (await fetch('snapshot.json?t=' + Date.now())).json(); } catch { return; }
+  connect();
+};
 refresh(); setInterval(refresh, 5000);
 </script>
 </body>

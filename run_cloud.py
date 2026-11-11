@@ -15,7 +15,7 @@ from bot import Coinbase, LiveBot
 from settings import load
 
 SNAPSHOT = Path(os.getenv("SNAPSHOT_FILE") or Path(__file__).with_name("snapshot.json"))
-PUBLISH_EVERY = 1800  # seconds between pushes of state to the `state` branch
+PUBLISH_EVERY = 300  # seconds between pushes of state to the `state` branch
 
 
 def write_snapshot(bot: LiveBot) -> dict:
