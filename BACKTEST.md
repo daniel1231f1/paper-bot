@@ -23,7 +23,7 @@ Periods were fixed before looking at results:
 * **Development** 2025-04-01 → 2026-07-15: all iteration happened here.
 * **Holdout** 2026-07-15 → 2026-11-11: evaluated once, for the final configuration only.
 
-## Final configuration (config hash `7d15e6b4acc7`)
+## Final configuration (config hash `eab6ad7b726a`)
 
 | Period | Variant | Return | Sharpe | Sortino | Max DD | Trades | Win rate | Profit factor | Expectancy / trade |
 |---|---|---|---|---|---|---|---|---|---|

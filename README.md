@@ -38,8 +38,9 @@ and the existing repo already used it. The cost is timer jitter, which the catch
 
 ## The 10-day clock and the config lock
 
-* The clock starts with the first bar that closes inside the trading window. Day 1 is that IST
-  calendar date (it may be a partial session); the experiment ends at 23:00 IST on day 10.
+* The clock starts with the first bar that closes inside the trading window, provided at least 8
+  hours of that session are left; otherwise the bot stays "Armed" and starts at the next 07:00 IST.
+  Day 1 is the IST calendar date of the start; the experiment ends at 23:00 IST on day 10.
 * At that moment every position is flattened, the engine freezes, and the final report is written
   once. Later runs only refresh the heartbeat.
 * When the experiment starts the bot stores a snapshot of `config.yaml` (everything except `ops`)
@@ -100,7 +101,7 @@ dashboard/index.html   single-file dashboard (no build step)
 research/              download, walk-forward backtest, exploration scripts
                        (record_book.py / analyze_book.py: the separate order-book recorder,
                         run by record-book.yml into the `book` branch; independent of the bot)
-tests/                 89 tests
+tests/                 90 tests
 ```
 
 ## Run it locally

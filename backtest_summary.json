@@ -1,6 +1,6 @@
 {
- "config_hash": "7d15e6b4acc7f015dd8c68139126989d8c8040ce649178af067013cee03e1242",
- "generated": "2026-11-11T08:02:01+00:00",
+ "config_hash": "eab6ad7b726ade4030a64a9a2eabb6f1c17b86d3829b3b938fa9871dc28149d3",
+ "generated": "2026-11-11T11:57:24+00:00",
  "periods": [
   {
    "name": "Development \u00b7 Apr 2025 to Jul 2026",
@@ -181,9 +181,9 @@
     "worst": -0.9425741175547117
    },
    "buy_hold": {
-    "total_return": 0.09196785307999344,
-    "sharpe": 0.7809287462229364,
-    "sortino": 1.184526460554364,
+    "total_return": 0.09642675547713075,
+    "sharpe": 0.8055120877732672,
+    "sortino": 1.222450458425868,
     "max_drawdown": 0.2929520830494635,
     "days": 120
    },
@@ -254,6 +254,6 @@
    }
   }
  ],
- "summary": "Walk-forward backtest of the exact configuration running here: the model is retrained daily and only ever scores bars that come after its training data. Development: 20 trades, -0.89% (did not beat costs; buy-and-hold -37.36%). Holdout: 0 trades, +0.00% (did not beat costs; buy-and-hold +9.20%).",
+ "summary": "Walk-forward backtest of the exact configuration running here: the model is retrained daily and only ever scores bars that come after its training data. Development: 20 trades, -0.89% (did not beat costs; buy-and-hold -37.36%). Holdout: 0 trades, +0.00% (did not beat costs; buy-and-hold +9.64%).",
  "caveat": "A backtest is a simulation with modelled fees, spread and slippage. It is not a forecast and guarantees nothing about live or future results."
 }

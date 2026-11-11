@@ -29,9 +29,11 @@ class ExperimentCfg:
     name: str = "ensemble-v2"
     days: int = 10
     starting_capital: float = 100.0
+    min_first_session_hours: float = 8.0  # day 1 needs at least this much session left, else start next open
 
     def __post_init__(self) -> None:
         _require(self.days >= 1, "experiment.days must be >= 1")
+        _require(0 <= self.min_first_session_hours <= 24, "experiment.min_first_session_hours must be 0..24")
         _require(self.starting_capital > 0, "experiment.starting_capital must be > 0")
 
 

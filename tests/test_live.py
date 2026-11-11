@@ -146,6 +146,8 @@ def test_fresh_signal_right_after_catch_up_is_still_tradeable(world):
 
 
 def test_position_left_open_is_flattened_at_2300_ist_even_if_the_run_happens_at_night(world):
+    world.t = ist(2026, 1, 5, 9, 0) + 5_000  # experiment started in the morning
+    world.bot().step()
     sig = ist(2026, 1, 5, 21, 30)
     world.forced[A].add(sig)
     world.t = sig + BAR + 5_000
@@ -307,3 +309,18 @@ def test_shadow_book_trades_what_the_model_gate_rejects_without_touching_the_str
     assert view["shadow"]["open_positions"] == 1 and view["account"]["equity"] == 100.0
     twin = world.bot()  # shadow state survives a restart
     assert A in twin.shadow.positions
+
+
+def test_late_first_run_stays_armed_and_starts_at_the_next_open(world):
+    world.t = ist(2026, 1, 5, 16, 0) + 5_000  # only 7h of the session left: not a fair day 1
+    world.forced[A].add(ist(2026, 1, 5, 15, 55))
+    bot = world.bot()
+    res = bot.step()
+    assert res.status == "ARMED" and bot.engine.start_ts is None and not bot.engine.pending
+    published: list[int] = []
+    bot.run(3600, publish=lambda: published.append(world.t) or True)
+    assert bot.engine.start_ts is None and world.t < ist(2026, 1, 5, 16, 2) and published  # run exits, no idle polling
+    world.t = ist(2026, 1, 6, 7, 5) + 5_000
+    nxt = world.bot()
+    assert nxt.step().status == "ACTIVE"
+    assert nxt.engine.start_ts == ist(2026, 1, 6, 7, 5) and nxt.engine.end_ts == ist(2026, 1, 15, 23, 0)

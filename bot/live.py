@@ -183,11 +183,18 @@ class LiveBot:
         view = self._persist(now)
         return StepResult(len(new_ts), view["status"]["code"], len(eng.positions), eng.frozen)
 
+    def _can_start(self, decision_ts: int) -> bool:
+        if not self.clock.in_window(decision_ts):
+            return False
+        left = self.clock.session_close(self.clock.local_date(decision_ts)) - decision_ts
+        return left >= self.cfg.experiment.min_first_session_hours * 3_600_000
+
     def _pending_bars(self, now: int) -> list[int]:
         eng, bar, upto = self.engine, self.cfg.bar_ms, self._upto
         if eng.start_ts is None:
-            # the experiment clock starts with the first fresh bar that closes inside the trading window
-            if self.data_stale or not self.clock.in_window(upto + bar):
+            # the experiment clock starts with the first fresh bar that closes inside the trading window,
+            # and only if enough of that session is left for day 1 to be a meaningful day
+            if self.data_stale or not self._can_start(upto + bar):
                 return []
             return [upto]
         first = eng.last_bar_ts + bar
@@ -315,8 +322,10 @@ class LiveBot:
             if res.frozen:
                 log.info("experiment is frozen: nothing left to do")
                 break
-            caught_up = self._upto <= self.engine.last_bar_ts or self.engine.start_ts is None
-            if not self.clock.in_window(now) and caught_up and not self.engine.positions and not self.engine.pending:
+            armed = self.engine.start_ts is None
+            caught_up = self._upto <= self.engine.last_bar_ts or armed
+            idle = not self.clock.in_window(now) or (armed and not self._can_start(now))  # asleep, or armed too late today
+            if idle and caught_up and not self.engine.positions and not self.engine.pending:
                 wait = self.clock.next_open(now) - now
                 if wait <= pre_open_wait_seconds * 1000 and now + wait < deadline:
                     log.info("session opens in %.0f min: waiting", wait / 60_000)

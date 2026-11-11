@@ -35,7 +35,7 @@ def status_of(eng: Engine, clock: SessionClock, now_ms: int, data_stale: bool, d
     in_window = clock.in_window(now_ms)
     if eng.start_ts is None:
         return {"code": "ARMED", "label": f"Armed, starts {open_txt}", "next_open_ts": nxt,
-                "detail": "The 10-day clock starts with the first bar inside the trading window."}
+                "detail": "The 10-day clock starts at the next session open so that day 1 is a full trading day."}
     if not in_window:
         return {"code": "SLEEPING", "label": f"Sleeping until {open_txt}", "next_open_ts": nxt,
                 "detail": "Outside the 07:00-23:00 session. Positions are flat; nothing trades until the next open."}

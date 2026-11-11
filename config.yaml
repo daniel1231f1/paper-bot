@@ -11,6 +11,7 @@ experiment:
   name: ensemble-v2
   days: 10
   starting_capital: 100.0
+  min_first_session_hours: 8.0  # the clock only starts if at least half a session is left; else next 07:00
 
 schedule:
   timezone: Asia/Kolkata        # IST, UTC+05:30, no daylight saving
