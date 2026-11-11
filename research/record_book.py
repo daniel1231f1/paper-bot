@@ -23,6 +23,9 @@ def depth(bids: dict, asks: dict, mid: float, bps: float) -> float:
     return (b - a) / (b + a + 1e-12)
 
 
+_last_pub = [time.time()]  # module-level: a feed reconnect must not reset the publish timer
+
+
 def publish() -> None:
     subprocess.run(["bash", "scripts/publish_book.sh"], check=False)  # a failed push must not kill the recorder
 
@@ -39,7 +42,7 @@ def session(deadline: float, f) -> None:
     asks: dict[float, float] = {}
     buy = sell = 0.0
     ntr = 0
-    last, last_pub = time.time(), time.time()
+    last = time.time()
     while time.time() < deadline:
         m = json.loads(ws.recv())
         t = m.get("type")
@@ -68,10 +71,10 @@ def session(deadline: float, f) -> None:
             buy = sell = 0.0
             ntr = 0
             last = now
-        if now - last_pub >= PUBLISH_EVERY:
+        if now - _last_pub[0] >= PUBLISH_EVERY:
             f.flush()
+            _last_pub[0] = now
             publish()
-            last_pub = now
 
 
 def main() -> int:
