@@ -1,0 +1,5 @@
+rows 20142 minutes 349.7
+h=  5s  test n= 5809 (moved 72%)  acc=62.6%  up-rate=51.7% guess-majority=51.7%  confident(|p-.5|>.1): n=2952 acc=67.4%  avg move=1.14 bps (fees ~30 bps)
+h= 10s  test n= 7113 (moved 88%)  acc=59.7%  up-rate=50.7% guess-majority=50.7%  confident(|p-.5|>.1): n=2671 acc=65.0%  avg move=1.47 bps (fees ~30 bps)
+h= 30s  test n= 7907 (moved 99%)  acc=54.8%  up-rate=49.6% guess-majority=50.4%  confident(|p-.5|>.1): n=1772 acc=56.4%  avg move=2.36 bps (fees ~30 bps)
+h= 60s  test n= 7984 (moved 100%)  acc=52.7%  up-rate=47.1% guess-majority=52.9%  confident(|p-.5|>.1): n=1333 acc=56.0%  avg move=3.26 bps (fees ~30 bps)
