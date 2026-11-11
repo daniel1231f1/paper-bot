@@ -1,0 +1,259 @@
+{
+ "config_hash": "7d15e6b4acc7f015dd8c68139126989d8c8040ce649178af067013cee03e1242",
+ "generated": "2026-11-11T08:02:01+00:00",
+ "periods": [
+  {
+   "name": "Development \u00b7 Apr 2025 to Jul 2026",
+   "strategy": {
+    "total_return": -0.008861556508278134,
+    "sharpe": -0.1516616981444314,
+    "sortino": -0.35019492480645786,
+    "max_drawdown": 0.05179693095671967,
+    "days": 471,
+    "trades": 20,
+    "win_rate": 0.35,
+    "profit_factor": 0.8474215264366001,
+    "expectancy": -0.044307782541390506,
+    "expectancy_r": -0.3029739574866342,
+    "avg_win": 0.7031017798316145,
+    "avg_loss": -0.446759085357624,
+    "net_pnl": -0.8861556508278101,
+    "fees": 1.3297815311306127,
+    "slippage": 0.7181573553425052,
+    "avg_hold_min": 309.25,
+    "best": 1.723186609001392,
+    "worst": -0.7179093642350004
+   },
+   "rules_only": {
+    "total_return": -0.1479081820797562,
+    "sharpe": -1.1732728736859386,
+    "sortino": -1.4514146860307577,
+    "max_drawdown": 0.15164877857081094,
+    "days": 471,
+    "trades": 106,
+    "win_rate": 0.3490566037735849,
+    "profit_factor": 0.5765668503628072,
+    "expectancy": -0.13953602082995903,
+    "expectancy_r": -0.26039380714513466,
+    "avg_win": 0.544321250018452,
+    "avg_loss": -0.5062420936037446,
+    "net_pnl": -14.790818207975658,
+    "fees": 6.4027931211504,
+    "slippage": 3.34721541160078,
+    "avg_hold_min": 252.0754716981132,
+    "best": 1.1910632160538888,
+    "worst": -1.0010647303672133
+   },
+   "buy_hold": {
+    "total_return": -0.3736400366345821,
+    "sharpe": -0.25556749453929073,
+    "sortino": -0.357207917334484,
+    "max_drawdown": 0.7030290066789685,
+    "days": 471
+   },
+   "model": {
+    "n": 8136,
+    "base_rate": 0.13237463126843657,
+    "auc": 0.5346604419073987,
+    "brier": 0.11813500496955576,
+    "brier_base": 0.11485158826498203,
+    "reliability": [
+     {
+      "bin": "(0.0, 0.1]",
+      "n": 2694,
+      "pred": 0.072,
+      "hit": 0.106,
+      "net_r": -0.274
+     },
+     {
+      "bin": "(0.1, 0.15]",
+      "n": 3267,
+      "pred": 0.124,
+      "hit": 0.149,
+      "net_r": -0.198
+     },
+     {
+      "bin": "(0.15, 0.2]",
+      "n": 1264,
+      "pred": 0.169,
+      "hit": 0.134,
+      "net_r": -0.29
+     },
+     {
+      "bin": "(0.2, 0.25]",
+      "n": 428,
+      "pred": 0.223,
+      "hit": 0.157,
+      "net_r": -0.305
+     },
+     {
+      "bin": "(0.25, 0.3]",
+      "n": 221,
+      "pred": 0.271,
+      "hit": 0.14,
+      "net_r": -0.302
+     },
+     {
+      "bin": "(0.3, 0.35]",
+      "n": 104,
+      "pred": 0.323,
+      "hit": 0.115,
+      "net_r": -0.319
+     },
+     {
+      "bin": "(0.35, 0.4]",
+      "n": 74,
+      "pred": 0.376,
+      "hit": 0.149,
+      "net_r": -0.227
+     },
+     {
+      "bin": "(0.4, 0.45]",
+      "n": 38,
+      "pred": 0.422,
+      "hit": 0.158,
+      "net_r": -0.241
+     },
+     {
+      "bin": "(0.45, 0.5]",
+      "n": 27,
+      "pred": 0.478,
+      "hit": 0.074,
+      "net_r": -0.117
+     },
+     {
+      "bin": "(0.5, 0.6]",
+      "n": 14,
+      "pred": 0.537,
+      "hit": 0.357,
+      "net_r": 0.294
+     },
+     {
+      "bin": "(0.6, 1.0]",
+      "n": 5,
+      "pred": 0.652,
+      "hit": 0.2,
+      "net_r": -0.091
+     }
+    ]
+   }
+  },
+  {
+   "name": "Holdout (never used for tuning) \u00b7 Jul 2026 to Nov 2026",
+   "strategy": {
+    "total_return": 0.0,
+    "sharpe": null,
+    "sortino": null,
+    "max_drawdown": 0.0,
+    "days": 120,
+    "trades": 0,
+    "win_rate": null,
+    "profit_factor": null,
+    "expectancy": null,
+    "expectancy_r": null,
+    "avg_win": null,
+    "avg_loss": null,
+    "net_pnl": 0.0,
+    "fees": 0.0,
+    "slippage": 0.0,
+    "avg_hold_min": null,
+    "best": null,
+    "worst": null
+   },
+   "rules_only": {
+    "total_return": -0.1444618825577373,
+    "sharpe": -2.8982867970559334,
+    "sortino": -3.514722139935034,
+    "max_drawdown": 0.15161388609632664,
+    "days": 120,
+    "trades": 223,
+    "win_rate": 0.38565022421524664,
+    "profit_factor": 0.6998740063379649,
+    "expectancy": -0.06478111325459053,
+    "expectancy_r": -0.20740339543820815,
+    "avg_win": 0.39171578419200925,
+    "avg_loss": -0.35134120946194514,
+    "net_pnl": -14.446188255773688,
+    "fees": 13.28191310753381,
+    "slippage": 8.423582560703998,
+    "avg_hold_min": 284.304932735426,
+    "best": 1.6557477189116998,
+    "worst": -0.9425741175547117
+   },
+   "buy_hold": {
+    "total_return": 0.09196785307999344,
+    "sharpe": 0.7809287462229364,
+    "sortino": 1.184526460554364,
+    "max_drawdown": 0.2929520830494635,
+    "days": 120
+   },
+   "model": {
+    "n": 1949,
+    "base_rate": 0.17957927142124167,
+    "auc": 0.5278531224872689,
+    "brier": 0.15182276139812803,
+    "brier_base": 0.1473305566970577,
+    "reliability": [
+     {
+      "bin": "(0.0, 0.1]",
+      "n": 302,
+      "pred": 0.067,
+      "hit": 0.103,
+      "net_r": -0.27
+     },
+     {
+      "bin": "(0.1, 0.15]",
+      "n": 487,
+      "pred": 0.124,
+      "hit": 0.189,
+      "net_r": -0.066
+     },
+     {
+      "bin": "(0.15, 0.2]",
+      "n": 453,
+      "pred": 0.177,
+      "hit": 0.205,
+      "net_r": -0.123
+     },
+     {
+      "bin": "(0.2, 0.25]",
+      "n": 343,
+      "pred": 0.224,
+      "hit": 0.248,
+      "net_r": 0.053
+     },
+     {
+      "bin": "(0.25, 0.3]",
+      "n": 230,
+      "pred": 0.272,
+      "hit": 0.148,
+      "net_r": -0.182
+     },
+     {
+      "bin": "(0.3, 0.35]",
+      "n": 94,
+      "pred": 0.318,
+      "hit": 0.106,
+      "net_r": -0.214
+     },
+     {
+      "bin": "(0.35, 0.4]",
+      "n": 35,
+      "pred": 0.369,
+      "hit": 0.114,
+      "net_r": -0.517
+     },
+     {
+      "bin": "(0.4, 0.45]",
+      "n": 5,
+      "pred": 0.406,
+      "hit": 0.2,
+      "net_r": 0.011
+     }
+    ]
+   }
+  }
+ ],
+ "summary": "Walk-forward backtest of the exact configuration running here: the model is retrained daily and only ever scores bars that come after its training data. Development: 20 trades, -0.89% (did not beat costs; buy-and-hold -37.36%). Holdout: 0 trades, +0.00% (did not beat costs; buy-and-hold +9.20%).",
+ "caveat": "A backtest is a simulation with modelled fees, spread and slippage. It is not a forecast and guarantees nothing about live or future results."
+}

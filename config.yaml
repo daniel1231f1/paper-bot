@@ -1,0 +1,111 @@
+# Paper-trading experiment configuration.
+#
+# Everything except `ops` is LOCKED when an experiment starts: the bot stores a snapshot in its
+# state, shows the SHA-256 on the dashboard, and ignores edits made here until the experiment ends.
+# To run a different config, start a new experiment (Actions -> paper-bot -> Run workflow -> RESET).
+#
+# These values were chosen on the development period only (see BACKTEST.md), before the holdout
+# period and before any live paper trade.
+
+experiment:
+  name: ensemble-v2
+  days: 10
+  starting_capital: 100.0
+
+schedule:
+  timezone: Asia/Kolkata        # IST, UTC+05:30, no daylight saving
+  active_start: "07:00"
+  active_end: "23:00"           # every position is flat by this time
+  entry_cutoff_minutes: 60      # last hour: manage open positions only
+
+market:
+  exchange: coinbaseexchange    # free public candles via ccxt; no API key, no order endpoints
+  universe: [BTC/USD, ETH/USD, SOL/USD, XRP/USD, DOGE/USD, LINK/USD, AVAX/USD]
+  timeframe_minutes: 5
+  min_notional: 5.0             # smallest order the simulated venue accepts, USD
+  default_qty_step: 0.000001
+  qty_step:                     # lot sizes, typical for major spot venues
+    BTC/USD: 0.00001
+    ETH/USD: 0.0001
+    SOL/USD: 0.001
+    XRP/USD: 0.1
+    DOGE/USD: 1.0
+    LINK/USD: 0.01
+    AVAX/USD: 0.01
+
+costs:                          # per side, fractions of notional. Round trip = 0.30%
+  taker_fee: 0.0010
+  half_spread: 0.0002
+  slippage: 0.0003
+  impact_coef: 0.10
+  max_participation: 0.02
+
+strategy:
+  allow_short: false            # spot account: long only
+  enabled_signals: [trend_pullback, breakout, mean_reversion]
+  ema_fast: 20
+  ema_mid: 50
+  ema_slow: 200
+  rsi_period: 14
+  bb_period: 20
+  adx_period: 14
+  atr_period: 14
+  vwap_bars: 288
+  donchian_bars: 48
+  vol_avg_bars: 288
+  atr_pct_bars: 2016
+  ema_fast_h: 20
+  ema_slow_h: 50
+  adx_period_h: 14
+  atr_period_h: 14
+  adx_trend_h: 22.0
+  adx_range_h: 18.0
+  atr_pct_dead: 0.15
+  atr_pct_shock: 0.97
+  breakout_vol_mult: 1.5
+  pullback_rsi_max: 45.0
+  mr_bb_z: -2.0
+  mr_rsi_max: 30.0
+  stop_atr: 1.5                 # x hourly ATR
+  target_atr: 3.0
+  mr_stop_atr: 1.5
+  mr_target_atr: 2.25
+  max_hold_bars: 96             # 8 hours
+  min_stop_cost_mult: 2.5
+
+model:
+  kind: logreg                  # regularised logistic regression + Platt calibration
+  train_days: 120
+  retrain_hours: 24
+  min_samples: 300
+  calib_fraction: 0.25
+  min_prob: 0.45
+  min_ev_r: 0.10
+  seed: 7
+
+risk:
+  risk_per_trade: 0.01
+  max_positions: 3
+  max_position_pct: 0.33
+  daily_loss_limit: 0.03
+  kill_switch_drawdown: 0.15
+  loss_streak: 3
+  loss_streak_cooldown_bars: 24
+  symbol_cooldown_bars: 6
+
+verdict:                        # pre-registered pass criteria for day 10
+  min_profit_factor: 1.3
+  max_drawdown: 0.15
+  min_trades: 30
+  bootstrap_samples: 5000
+  confidence: 0.90
+
+ops:                            # operational only; not part of the locked hash
+  poll_seconds: 20
+  max_signal_age_seconds: 150
+  stale_after_seconds: 900
+  warmup_bars: 4200
+  max_retries: 4
+  retry_base_seconds: 1.5
+  publish_seconds: 300
+  equity_curve_points: 3000

@@ -1,9 +1,10 @@
 .venv/
 __pycache__/
 .pytest_cache/
-.env
-state.json
-snapshot.json
+.cache/
+state/
+research/out/
 *.tmp
+.env
 book.csv
 report.txt

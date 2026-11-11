@@ -1,32 +1,60 @@
 name: paper-bot
+# PAPER TRADING ONLY. Runs the bot in ~5.5h sessions. Triggers arriving while a session is running
+# queue behind it (one pending run at most), so there is always exactly one writer of the state.
 on:
   schedule:
-    - cron: "17 * * * *"   # hourly; extra triggers just queue behind the running job
+    - cron: "7,37 * * * *"   # UTC. GitHub may delay or skip these; the bot catches up idempotently.
+  push:                      # a deploy starts (or queues) a run straight away
+    branches: [main]
+    paths: ["bot/**", "config.yaml", "dashboard/**", "scripts/**", "requirements.txt", ".github/workflows/paper-bot.yml"]
   workflow_dispatch:
+    inputs:
+      reset_experiment:
+        description: "Type RESET to archive the current run and start a NEW 10-day experiment"
+        required: false
+        default: ""
 permissions:
   contents: write
 concurrency:
   group: paper-bot
-  cancel-in-progress: false   # never kill the running bot; the next one waits its turn
+  cancel-in-progress: false
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 355
+    timeout-minutes: 350
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PUBLISH: "1"
-      RUN_SECONDS: "20400"   # 340 min, then hand over to the next job
+      RUN_SECONDS: "19800"
+      STATE_DIR: state
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.14"
           cache: pip
-      - run: pip install -r requirements.txt
+      - run: pip install -q -r requirements.txt
+      - name: Restore candle + model cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .cache
+          key: bot-cache-${{ github.run_id }}
+          restore-keys: bot-cache-
       - name: Restore state
         run: bash scripts/restore_state.sh
+      - name: Reset experiment (manual, explicit)
+        if: github.event_name == 'workflow_dispatch' && inputs.reset_experiment == 'RESET'
+        run: bash scripts/reset_experiment.sh
       - name: Run bot
-        run: python run_cloud.py
-      - name: Save state
+        run: python -m bot.cli run
+      - name: Publish final state
         if: always()
-        run: bash scripts/publish_state.sh
+        run: bash scripts/publish_state.sh || true
+      - name: Save candle + model cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .cache
+          key: bot-cache-${{ github.run_id }}
